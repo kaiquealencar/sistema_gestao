@@ -1,0 +1,33 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+
+.navbar {
+  background: #222;
+  color: #fff;
+  padding: 0.75rem 1rem;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.navbar-menu a,
+.navbar-auth a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar-user {
+  margin-right: 0.75rem;
+}

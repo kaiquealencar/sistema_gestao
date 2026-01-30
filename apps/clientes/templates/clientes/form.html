@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %} {% if editando %}  Editar Cliente {% else %}  Novo Cliente {% endif %} {% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-7">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="text-center mb-4">
+                    {% if editando %}  Editar Cliente {% else %}  Novo Cliente {% endif %}
+                </h5>
+
+                <form action="{% if editando %}{% url 'clientes:editar_cliente' cliente.id %}{% else %}{% url 'clientes:cadastrar_cliente' %}{% endif %}" method="post">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        {% if field.field.widget.input_type == "checkbox" %}
+                            <div class="form-check form-switch mb-3">
+                                {{ field }}
+                                <label class="form-check-label" for="{{ field.id_for_label }}">
+                                    {{ field.label }}
+                                </label>
+                                {% if field.errors %}
+                                    <div class="text-danger small">
+                                        {{ field.errors|striptags }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="mb-3">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="text-danger small">
+                                        {{ field.errors|striptags }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary w-100">
+                        {% if editando %}  Atualizar {% else %}  Criar {% endif %}
+                    </button> <br>
+                    <a href="{% url 'clientes:cliente_list'%}" class="btn btn-secondary w-100 mt-2">Voltar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
