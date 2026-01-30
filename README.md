@@ -11,7 +11,7 @@ Este projeto faz parte do meu portfólio e está sendo desenvolvido de forma inc
 
 
 ## Funcionalidades planejadas
-
+- CRUD completo de serviços
 - Controle de permissões por tipo de usuário (Admin, Gerente, Funcionário)  
 - Relatórios de clientes e crachás emitidos  
 - Integração com QR Code  
