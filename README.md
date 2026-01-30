@@ -1,7 +1,4 @@
 # Sistema Vitrine – Gestão de Clientes
-
-![Python CI](https://github.com/seu-usuario/nome-do-repo/actions/workflows/python-ci.yml/badge.svg)
-
 ## Projeto em desenvolvimento
 
 Sistema web desenvolvido em **Django** com o objetivo de gerenciar clientes e gerar crachás de identificação.  
