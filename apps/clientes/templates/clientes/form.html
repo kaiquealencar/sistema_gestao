@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} {% if editando %}  Editar Cliente {% else %}  Novo Cliente {% endif %} {% endblock %}
+{% block title %} {% if editando %}Editar Cliente{% else %}Novo Cliente{% endif %} {% endblock %}
 
 {% block content %}
 
@@ -9,13 +9,21 @@
         <div class="card shadow-sm">
             <div class="card-body">
                 <h5 class="text-center mb-4">
-                    {% if editando %}  Editar Cliente {% else %}  Novo Cliente {% endif %}
+                    {% if editando %}Editar Cliente{% else %}Novo Cliente{% endif %}
                 </h5>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
 
                 <form action="{% if editando %}{% url 'clientes:editar_cliente' cliente.id %}{% else %}{% url 'clientes:cadastrar_cliente' %}{% endif %}" method="post">
                     {% csrf_token %}
 
-                    {% for field in form %}                     
+                    {% for field in form %}
                         {% if field.field.widget.input_type == "checkbox" %}
                             <div class="form-check form-switch mb-3">
                                 {{ field }}
@@ -40,8 +48,9 @@
                             </div>
                         {% endif %}
                     {% endfor %}
+
                     <button type="submit" class="btn btn-primary w-100">
-                        {% if editando %}  Atualizar {% else %}  Criar {% endif %}
+                        {% if editando %}Atualizar{% else %}Criar{% endif %}
                     </button> <br>
                     <a href="{% url 'clientes:cliente_list'%}" class="btn btn-secondary w-100 mt-2">Voltar</a>
                 </form>
@@ -51,14 +60,35 @@
 </div>
 
 {% load static %}
+
+<script src="{% static 'js/masks.js' %}"></script>
 <script src="{% static 'js/busca_cep.js' %}"></script>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     const cepField = document.getElementById("cep");
     if (cepField) {
-      cepField.addEventListener("blur", buscaCep);
+        cepField.addEventListener("blur", buscaCep);
     }
-  });
+});
+document.addEventListener("DOMContentLoaded", () => {
+    const cpfCnpjField = document.getElementById("id_cpf_cnpj");
+
+    if (cpfCnpjField) {
+        cpfCnpjField.addEventListener("input", () => {
+            const mb3Div = cpfCnpjField.closest(".mb-3");
+            if (mb3Div) {
+                const errorDivs = mb3Div.querySelectorAll(".text-danger");
+                errorDivs.forEach(div => div.remove());
+            }
+
+            cpfCnpjField.classList.remove("is-invalid");
+
+            const alerts = document.querySelectorAll(".alert");
+            alerts.forEach(alert => alert.remove());
+        });
+    }
+});
 </script>
+
 {% endblock %}

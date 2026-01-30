@@ -6,8 +6,8 @@ from .models import Cliente
 
 def cadastrar_cliente(request):
     form = ClienteForm(request.POST or None)
-    if request.method == "POST":
-        cliente = form.save(commit=False)
+    if request.method == "POST" and form.is_valid():
+        cliente = form.save()
         cliente.ativo = False if "ativo" not in form.cleaned_data else form.cleaned_data["ativo"]
         cliente.save()
 
