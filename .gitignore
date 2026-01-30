@@ -1,0 +1,16 @@
+# Python
+*.pyc
+__pycache__/
+
+# Banco local
+db.sqlite3
+
+# Django
+/static/
+/media/
+
+# Configs de ambiente
+.env
+
+# Virtual environment
+.venv/
