@@ -31,3 +31,8 @@ body {
 .navbar-user {
   margin-right: 0.75rem;
 }
+
+.campo-auto {
+    background-color: #e9ecef !important; 
+    pointer-events: auto;       
+}
