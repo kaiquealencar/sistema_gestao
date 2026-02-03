@@ -1,6 +1,7 @@
 from email.mime import message
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
+from django.urls import reverse
 
 from .forms import ServicoForm
 from .models import Servico
@@ -12,6 +13,7 @@ def servico_create(request):
     if request.method == "POST" and form.is_valid():
         servico = form.save()
         servico.ativo = False if "ativo" not in form.cleaned_data else form.cleaned_data["ativo"]
+        servico.full_clean()
         servico.save()
 
         messages.success(request, "Serviço cadastrado com sucesso!")
