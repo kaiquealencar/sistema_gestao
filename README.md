@@ -6,12 +6,12 @@ Este projeto faz parte do meu portfólio e está sendo desenvolvido de forma inc
 
 ## Funcionalidades atuais
 
-- CRUD completo de clientes (Criar, Ler, Atualizar, Excluir)  
+- CRUD completo de clientes, serviços e orçamento (Criar, Ler, Atualizar, Excluir, listar)
+- Modal: exclusão e visualização de orçamentos  
 - Mensagens de feedback para ações realizadas (success, error)  
 
 
 ## Funcionalidades planejadas
-- CRUD completo de serviços
 - Controle de permissões por tipo de usuário (Admin, Gerente, Funcionário)  
 - Relatórios de clientes e crachás emitidos  
 - Integração com QR Code  
