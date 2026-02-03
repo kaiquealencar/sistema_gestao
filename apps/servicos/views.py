@@ -45,4 +45,4 @@ def servico_delete(request, servico_id):
         messages.success(request, f"Serviço {servico.nome} excluído com sucesso!")
         
         return redirect('servicos:servico_list')
-    return render(request, 'servicos/servico_confirm_delete.html', {'servico_id': servico_id})
+    return render(request, 'servicos/servico_list.html', {'servico_id': servico_id})
