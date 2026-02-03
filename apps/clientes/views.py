@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from .forms import ClienteForm
 from .models import Cliente
 
-def cadastrar_cliente(request):
+def cliente_create(request):
     form = ClienteForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         cliente = form.save()
@@ -15,9 +15,9 @@ def cadastrar_cliente(request):
         return redirect('clientes:cliente_list')
     
 
-    return render(request, 'clientes/form.html', {'form': form})
+    return render(request, 'clientes/cliente_form.html', {'form': form})
 
-def editar_cliente(request, cliente_id):    
+def cliente_edit(request, cliente_id):    
     cliente = get_object_or_404(Cliente, id=cliente_id)
     form = ClienteForm(request.POST or None, instance=cliente)  
 
@@ -26,9 +26,9 @@ def editar_cliente(request, cliente_id):
         messages.success(request, f"Cliente {cliente.nome} atualizado com sucesso!")
         return redirect('clientes:cliente_list')
     
-    return render(request, 'clientes/form.html', {'form': form, 'cliente': cliente, "editando": True})
+    return render(request, 'clientes/cliente_form.html', {'form': form, 'cliente': cliente, "editando": True})
     
-def excluir_cliente(request, cliente_id):
+def cliente_delete(request, cliente_id):
     cliente = get_object_or_404(Cliente, id=cliente_id)
 
     if request.method == "POST":
@@ -39,4 +39,4 @@ def excluir_cliente(request, cliente_id):
 
 def cliente_list(request):
     clientes = Cliente.objects.all()
-    return render(request, 'clientes/lista_clientes.html', {'clientes': clientes})
+    return render(request, 'clientes/clientes_list.html', {'clientes': clientes})

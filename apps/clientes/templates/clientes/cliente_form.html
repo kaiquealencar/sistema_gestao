@@ -20,7 +20,7 @@
                     {% endfor %}
                 {% endif %}
 
-                <form action="{% if editando %}{% url 'clientes:editar_cliente' cliente.id %}{% else %}{% url 'clientes:cadastrar_cliente' %}{% endif %}" method="post">
+                <form action="{% if editando %}{% url 'clientes:cliente_edit' cliente.id %}{% else %}{% url 'clientes:cliente_create' %}{% endif %}" method="post">
                     {% csrf_token %}
 
                     {% for field in form %}

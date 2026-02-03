@@ -5,7 +5,7 @@
 {% block content %}
     <h1>Lista de Clientes</h1>
     <br>
-     <a href="{% url 'clientes:cadastrar_cliente' %}" class="btn btn-primary" style="margin-bottom: 10px;">
+     <a href="{% url 'clientes:cliente_create' %}" class="btn btn-primary" style="margin-bottom: 10px;">
                Novo Cliente
     </a> 
     
@@ -49,11 +49,16 @@
                     <td>
                         <div class="btn-group" role="group" aria-label="Ações">
 
-                            <a href="{% url 'clientes:editar_cliente' cliente.id %}" class="btn btn-sm btn-primary me-2 rounded-pill">Editar</a>
-                            <form action="{% url 'clientes:excluir_cliente' cliente.id %}" method="POST" class="d-inline">
-                                {% csrf_token %}
-                                    <button type="submit" class="btn btn-sm btn-danger rounded-pill">Excluir</button>
-                            </form>                        
+                            <a href="{% url 'clientes:cliente_edit' cliente.id %}" class="btn btn-sm btn-primary me-2 rounded-pill">Editar</a>
+                             <a href="#"
+                                class="btn btn-sm btn-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#confirmDeleteModal"
+                                data-name="{{ servico.nome }}"
+                                data-action="{% url 'clientes:cliente_delete' cliente.id %}">
+                                Excluir
+                            </a>                        
+                                             
                         </div>
                     </td>
                 </tr>
