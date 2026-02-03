@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <h2 class="mb-4">
+    {% if editando %}Editar Orçamento{% else %}Novo Orçamento{% endif %}
+  </h2>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="card mb-4">
+      <div class="card-header fw-bold">
+        Dados do Orçamento
+      </div>
+
+      <div class="card-body">
+        <div class="row g-3">
+
+          <div class="col-md-6">
+            <label class="form-label">Cliente</label>
+            {{ form.cliente }}
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">Validade</label>
+            {{ form.validade }}
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">Status</label>
+            {{ form.status }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Observações</label>
+            {{ form.observacoes }}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header fw-bold">
+        Serviços do Orçamento
+      </div>
+
+      <div class="card-body">
+
+        {{ formset.management_form }}
+
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Serviço</th>
+              <th style="width:120px;">Qtd</th>
+              <th style="width:150px;">Preço</th>
+              <th style="width:80px;">Remover</th>
+            </tr>
+          </thead>
+
+          <tbody id="formset-body">
+            {% for f in formset %}
+              <tr>
+                <td>{{ f.servico }}</td>
+                <td>{{ f.quantidade }}</td>
+                <td>{{ f.preco }}</td>
+                <td class="text-center">
+                {{ formset.empty_form.DELETE.as_hidden }}
+                <button type="button"
+                    class="btn btn-sm btn-remove">
+                    🗑️
+                </button>
+              </td>
+                {{ f.id }}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div id="empty-form" class="d-none">
+          <table>
+            <tr>
+              <td>{{ formset.empty_form.servico }}</td>
+              <td>{{ formset.empty_form.quantidade }}</td>
+              <td>{{ formset.empty_form.preco }}</td>
+              <td class="text-center">
+                {{ formset.empty_form.DELETE.as_hidden }}
+                <button type="button"
+                    class="btn btn-outline-danger btn-sm btn-remove">
+                    🗑️
+                </button>
+              </td>
+              {{ formset.empty_form.id }}
+            </tr>
+          </table>
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-outline-primary btn-sm mt-2"
+          id="add-servico">
+          ➕ Adicionar serviço
+        </button>
+
+        <div class="text-end mt-3">
+          <h5>
+            Total do orçamento:
+            <strong class="text-success">
+              R$ <span id="total-orcamento">0,00</span>
+            </strong>
+          </h5>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="d-grid gap-2 mt-4">
+        <button type="submit" class="btn btn-primary mb-2">
+          {% if editando %}Atualizar{% else %}Criar{% endif %}
+        </button>
+    
+        <a href="{% url 'orcamentos:orcamento_list' %}"
+           class="btn btn-secondary mb-5">
+          Voltar
+        </a>
+    </div>
+
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/orcamento.js' %}"></script>
+{% endblock %}

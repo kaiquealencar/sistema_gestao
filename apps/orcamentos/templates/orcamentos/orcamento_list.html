@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de Orçamentos{% endblock %}
+
+{% block content %}
+<h1>Lista de Orçamentos</h1>
+
+<a href="{% url 'orcamentos:orcamento_create' %}"
+   class="btn btn-primary mb-3">
+    Novo Orçamento
+</a>
+
+<table class="table table-striped table-hover align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Cliente</th>
+            <th>Data</th>
+            <th>Validade</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for orcamento in orcamentos %}
+        <tr>
+            <td>{{ orcamento.id }}</td>
+            <td>{{ orcamento.cliente.nome }}</td>
+            <td>{{ orcamento.data_criacao|date:"d/m/Y" }}</td>
+            <td>{{ orcamento.validade|date:"d/m/Y" }}</td>
+            <td>
+                <span class="badge bg-info text-dark">
+                    {{ orcamento.get_status_display }}
+                </span>
+            </td>
+            <td>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-outline-info"
+                        data-bs-toggle="modal"
+                        data-bs-target="#orcamentoModal"
+                        data-url="{% url 'orcamentos:orcamento_detail' orcamento.id %}">
+                        Ver
+                    </button>
+
+                    <a href="{% url 'orcamentos:orcamento_edit' orcamento.id %}"
+                       class="btn btn-sm btn-outline-warning">
+                        Editar
+                    </a>
+
+                    <button class="btn btn-sm btn-outline-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#confirmDeleteModal"
+                            data-name="Orçamento #{{ orcamento.id }}"
+                            data-action="{% url 'orcamentos:orcamento_delete' orcamento.id %}">
+                        Excluir
+                    </button>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

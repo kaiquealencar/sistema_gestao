@@ -77,6 +77,33 @@
         </div>
     </div>
 
+    <div class="modal fade"
+         id="orcamentoModal"
+         tabindex="-1"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalhes do Orçamento</h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body" id="orcamentoModalBody">
+                    <div class="text-center text-muted">
+                        Carregando...
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="{% static 'js/orcamento_modal.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -102,6 +129,9 @@
             }
         });
     </script>
+
+    
+{% block extra_js %}{% endblock %}
 
 </body>
 </html>

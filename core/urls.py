@@ -9,4 +9,5 @@ urlpatterns = [
 
     path('clientes/', include('apps.clientes.urls')),
     path('servicos/', include('apps.servicos.urls')),
+    path('orcamentos/', include('apps.orcamentos.urls')),
 ]

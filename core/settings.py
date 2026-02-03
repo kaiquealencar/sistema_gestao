@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'apps.clientes',
     'apps.servicos',
+    'apps.orcamentos',
 ]
 
 MIDDLEWARE = [
