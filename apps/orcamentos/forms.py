@@ -9,10 +9,16 @@ class OrcamentoForm(forms.ModelForm):
         fields = ['cliente', 'validade', 'status', 'observacoes']
         widgets = {
             'cliente': forms.Select(attrs={'class': 'form-select'}),
-            'validade': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'validade': forms.DateInput(
+                format='%Y-%m-%d',
+                attrs={'class': 'form-control', 'type': 'date'}),
             'status': forms.Select(attrs={'class': 'form-select'}),
             'observacoes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.validade:
+            self.fields['validade'].initial = self.instance.validade.strftime('%Y-%m-%d')
 
 class ItemOrcamentoForm(forms.ModelForm):
     class Meta:
@@ -23,6 +29,10 @@ class ItemOrcamentoForm(forms.ModelForm):
             'quantidade': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
             'preco': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
         }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
 
 ItemOrcamentoFormSet = inlineformset_factory(
     Orcamento,               

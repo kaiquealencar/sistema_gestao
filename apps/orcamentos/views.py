@@ -23,11 +23,9 @@ def orcamento_create(request):
 
         if form.is_valid() and formset.is_valid():
             orcamento = form.save()
-            itens = formset.save(commit=False)
+            formset.instance = orcamento
+            formset.save()
 
-            for item in itens:
-                item.orcamento = orcamento
-                item.save()
 
             messages.success(request, "Orçamento criado com sucesso!")
             return redirect('orcamentos:orcamento_list')
@@ -49,7 +47,7 @@ def orcamento_edit(request, id):
         formset = ItemOrcamentoFormSet(request.POST, instance=orcamento)
 
         if form.is_valid() and formset.is_valid():
-            form.save()
+            form.save()      
             formset.save()
             messages.success(request, "Orçamento atualizado com sucesso!")
             return redirect('orcamentos:orcamento_list')

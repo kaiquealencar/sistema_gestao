@@ -69,35 +69,34 @@
                 <td>{{ f.quantidade }}</td>
                 <td>{{ f.preco }}</td>
                 <td class="text-center">
-                {{ formset.empty_form.DELETE.as_hidden }}
-                <button type="button"
-                    class="btn btn-sm btn-remove">
-                    🗑️
-                </button>
+                  <input type="hidden" name="{{ f.prefix }}-DELETE" id="id_{{ f.prefix }}-DELETE" value="">
+                  {{ f.id }}
+                  <button type="button"
+                      class="btn btn-sm btn-remove">
+                      🗑️
+                  </button>
               </td>
-                {{ f.id }}
+                
               </tr>
             {% endfor %}
           </tbody>
         </table>
-
-        <div id="empty-form" class="d-none">
-          <table>
-            <tr>
-              <td>{{ formset.empty_form.servico }}</td>
-              <td>{{ formset.empty_form.quantidade }}</td>
-              <td>{{ formset.empty_form.preco }}</td>
-              <td class="text-center">
-                {{ formset.empty_form.DELETE.as_hidden }}
-                <button type="button"
-                    class="btn btn-outline-danger btn-sm btn-remove">
-                    🗑️
-                </button>
-              </td>
-              {{ formset.empty_form.id }}
-            </tr>
-          </table>
-        </div>
+        <table class="d-none">
+          <tbody id="empty-form">
+              <tr>
+                  <td>{{ formset.empty_form.servico }}</td>
+                  <td>{{ formset.empty_form.quantidade }}</td>
+                  <td>{{ formset.empty_form.preco }}</td>
+                  <td class="text-center">
+                    <input type="hidden" name="{{ formset.empty_form.prefix }}-DELETE" id="id_{{ formset.empty_form.prefix }}-DELETE" value="">
+                    <button type="button" class="btn btn-outline-danger btn-sm btn-remove">
+                        🗑️
+                    </button>
+                  </td>
+                  {{ formset.empty_form.id }}
+              </tr>
+          </tbody>
+        </table>
 
         <button
           type="button"
