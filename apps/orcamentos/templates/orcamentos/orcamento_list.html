@@ -46,6 +46,13 @@
                        class="btn btn-sm btn-outline-warning">
                         Editar
                     </a>
+                     <a href="{% url 'orcamentos:exportar_orcamento_pdf' orcamento.id %}"
+                       class="btn btn-sm btn-outline-secondary" 
+                       target="_blank"
+                       title="Exportar para PDF">
+                       <i class="bi bi-printer"></i>
+                        Exportar PDF
+                    </a>
 
                     <button class="btn btn-sm btn-outline-danger"
                             data-bs-toggle="modal"

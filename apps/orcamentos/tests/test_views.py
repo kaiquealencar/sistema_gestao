@@ -99,3 +99,11 @@ def test_orcamento_delete_view(client, orcamento):
     response = client.post(url)
     assert response.status_code == 302
     assert not Orcamento.objects.filter(id=orcamento.id).exists()
+
+
+@pytest.mark.django_db
+def test_orcamento_pdf_view(client, orcamento):
+    url = reverse("orcamentos:exportar_orcamento_pdf", args=[orcamento.id])
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response['Content-Type'] == 'application/pdf'

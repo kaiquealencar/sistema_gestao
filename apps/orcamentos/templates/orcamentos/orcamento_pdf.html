@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Orçamento {{ orcamento.id }}</title>
+    <link rel="stylesheet" href="{% static 'orcamentos/css/relatorio_print.css' %}">
+</head>
+<body>
+<header>
+    <p>Empresa de Informática LTDA</p>
+</header>
+<div class="container">
+
+    <div class="titulo">
+        <h1> ORÇAMENTO </h1>
+        <p><i>Orçamento Nº:</i> <strong>{{ orcamento.id }}</strong></p>
+    </div>
+
+    <div class="bloco-info">
+        <div><strong>Cliente:</strong> <i>{{ orcamento.cliente.nome }}</i></div>
+        <div><strong>Data:</strong> <i>{{ orcamento.data_criacao|date:"d/m/Y" }}</i></div>
+    </div>
+
+    <table class="tabela">
+        <thead class="tabela-cabecalho">
+            <tr>
+                <th>Item</th>
+                <th>Descrição</th>
+                <th>Qtd</th>
+                <th>Vl. Unit. (R$)</th>
+                <th>Total (R$)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in orcamento.itemorcamento_set.all %}
+            <tr>
+                <td class="center">{{ forloop.counter }}</td>
+                <td>{{ item.servico.nome }}</td>
+                <td class="center">{{ item.quantidade }}</td>
+                <td class="right">{{ item.preco|floatformat:2 }}</td>
+                <td class="right">{{ item.subtotal|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="right"><strong>TOTAL GERAL</strong></td>
+                <td class="right"><strong>R$ {{ orcamento.total|floatformat:2 }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="observacoes">
+        <p><strong>Observações:</strong></p>
+        <p>Valores válidos até <strong><u>{{ orcamento.validade|date:"d/m/Y" }}</u></strong>.</p>
+    </div>
+
+    <div class="assinaturas">
+        <div>
+            _______________________________________<br>
+            Assinatura do Cliente
+        </div>
+        <div>
+            _______________________________________<br>
+            Responsável
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

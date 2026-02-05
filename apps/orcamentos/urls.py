@@ -8,6 +8,7 @@ urlpatterns = [
     path('<int:id>/', views.orcamento_detail, name='orcamento_detail'),
     path('<int:id>/edit/', views.orcamento_edit, name='orcamento_edit'),
     path('<int:id>/delete/', views.orcamento_delete, name='orcamento_delete'),
+    path('<int:id>/pdf/', views.exportar_orcamento_pdf, name='exportar_orcamento_pdf'),
 
 ]
 

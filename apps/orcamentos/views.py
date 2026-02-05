@@ -1,5 +1,9 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
+from django.template.loader import render_to_string
+from weasyprint import HTML
+from django.http import HttpResponse
+
 from .forms import OrcamentoForm, ItemOrcamentoFormSet
 from .models import Orcamento
 
@@ -80,3 +84,15 @@ def orcamento_detail(request, id):
     return render(request, 'orcamentos/orcamento_detail.html', {
         'orcamento': orcamento
     })
+
+
+def exportar_orcamento_pdf(request, id):
+    orcamento = get_object_or_404(Orcamento, id=id)
+    html_string = render_to_string('orcamentos/orcamento_pdf.html', {'orcamento': orcamento})
+    html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    pdf_content = html.write_pdf()
+
+    response = HttpResponse(pdf_content, content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="orcamento_{orcamento.id}.pdf"'
+    #response['Content-Disposition'] = f'attachment; filename="orcamento_{orcamento.id}.pdf"'
+    return response 
