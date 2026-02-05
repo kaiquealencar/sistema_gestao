@@ -9,6 +9,11 @@ Este projeto faz parte do meu portfólio e está sendo desenvolvido de forma inc
 - CRUD completo de clientes, serviços e orçamento (Criar, Ler, Atualizar, Excluir, listar)
 - Modal: exclusão e visualização de orçamentos  
 - Mensagens de feedback para ações realizadas (success, error)  
+- Geração de PDF de orçamento individual
+    - Layoyt formato para folha A4
+    - Cabeçalho com dados da empresa, número do orçamento e nome do cliente
+    - Tabela com detalhamento de serviços
+    - Valor total destacado
 
 
 ## Funcionalidades planejadas

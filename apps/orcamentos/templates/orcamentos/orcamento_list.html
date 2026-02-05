@@ -53,6 +53,11 @@
                        <i class="bi bi-printer"></i>
                         Exportar PDF
                     </a>
+                    <button type="button" 
+                            onclick="enviarZap(this, '{% url 'orcamentos:enviar_orcamento_whatsapp' orcamento.id %}')"
+                            class="btn btn-sm btn-success">
+                            <span>📲</span> Enviar WhatsApp
+                    </button>
 
                     <button class="btn btn-sm btn-outline-danger"
                             data-bs-toggle="modal"
@@ -67,4 +72,41 @@
         {% endfor %}
     </tbody>
 </table>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        function enviarZap(btn, url) {
+            const originalText = btn.innerHTML;
+            
+            // Feedback visual
+            btn.disabled = true;
+            btn.innerHTML = "⌛ Enviando...";
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(async response => {
+                const data = await response.json(); // Tenta ler o JSON de resposta
+
+                if (response.ok) {
+                    alert("✅ Orçamento enviado com sucesso!");
+                } else {
+                    // Se a View retornou erro (ex: número inválido na Twilio)
+                    alert("❌ Erro: " + (data.message || "Erro desconhecido"));
+                }
+            })
+            .catch(error => {
+                alert("🚨 Erro de conexão ou servidor.");
+                console.error(error);
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            });
+        }
+    </script>
 {% endblock %}
