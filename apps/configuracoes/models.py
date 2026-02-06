@@ -4,6 +4,7 @@ from fernet_fields.fields import EncryptedTextField
 
 class ConfiguracoesWhatsapp(models.Model):
     nome_instancia = models.CharField(max_length=100, default="")
+    instancia_id = EncryptedTextField(default="")
     token = EncryptedTextField()
     client_token = EncryptedTextField(null=True, blank=True)
     url_base = models.URLField(max_length=2000)

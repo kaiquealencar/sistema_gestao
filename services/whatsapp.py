@@ -1,7 +1,10 @@
 import os
 import requests
+from apps.configuracoes.models import ConfiguracoesWhatsapp
 
 def enviar_mensagem_whatsapp(numero_destino, mensagem):    
+
+
     zapi_instance_id = os.getenv("ZAPI_INSTANCE_ID")
     zapi_token = os.getenv("ZAPI_TOKEN")
     zapi_client_token = os.getenv("ZAPI_CLIENT_TOKEN")
@@ -28,3 +31,9 @@ def enviar_mensagem_whatsapp(numero_destino, mensagem):
         return {"status": "erro", "detalhes": f"HTTPError: {str(e)}"}
     except requests.exceptions.RequestException as e:
         return {"status": "erro", "detalhes": f"RequestException: {str(e)}"}
+
+
+def buscar_dados_api():
+    dados_api = ConfiguracoesWhatsapp.objects.first()
+
+    return {"instance_id": dados_api.token}

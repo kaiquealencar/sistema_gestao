@@ -11,14 +11,6 @@
                     Configurações WhatsApp
                 </h5>
 
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-
                 <form action="{% url 'config:config_view' %}" method="post">
                     {% csrf_token %}
 
@@ -70,9 +62,11 @@
         document.getElementById("showTokens").addEventListener('change', function(){
             const tokeninput =  document.getElementById("{{ form.token.id_for_label }}")
             const clientinput = document.getElementById("{{ form.client_token.id_for_label }}")
+            const instancia_id = document.getElementById("{{ form.instancia_id.id_for_label }}")
 
             tokeninput.type =  (this.checked) ? "text" : "password";
             clientinput.type =  (this.checked) ? "text" : "password";
+            instancia_id.type =  (this.checked) ? "text" : "password";
            
         });
     </script>
