@@ -10,5 +10,5 @@ urlpatterns = [
     path('clientes/', include('apps.clientes.urls')),
     path('servicos/', include('apps.servicos.urls')),
     path('orcamentos/', include('apps.orcamentos.urls')),
-    path('configuracoes/', include('apps.configuracoes.urls'))
+    path('configuracoes-whatsapp/', include('apps.configuracoes.urls'))
 ]

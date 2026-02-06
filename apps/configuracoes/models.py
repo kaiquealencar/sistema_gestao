@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from fernet_fields.fields import EncryptedTextField
 
 class ConfiguracoesWhatsapp(models.Model):
-    instancia = models.CharField(max_length=100)
+    nome_instancia = models.CharField(max_length=100, default="")
     token = EncryptedTextField()
     client_token = EncryptedTextField(null=True, blank=True)
     url_base = models.URLField(max_length=2000)

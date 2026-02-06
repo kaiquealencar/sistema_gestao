@@ -5,7 +5,7 @@ from apps.configuracoes.models import ConfiguracoesWhatsapp
 
 @pytest.mark.django_db
 def test_config_create_view(client):
-    url = reverse("config:config_create")
+    url = reverse("config:config_view")
     data = {
         "instancia": "58291038475629103847562910384756",
         "token": "842095317659284061374592",
@@ -17,5 +17,5 @@ def test_config_create_view(client):
     response = client.post(url, data)
     assert response.status_code == 302
 
-    assert response.url == reverse("config:config_list")
+    assert response.url == reverse("config:config_view")
     assert ConfiguracoesWhatsapp.objects.filter(url_base="http://localhost:8000/api/v1/").exists()

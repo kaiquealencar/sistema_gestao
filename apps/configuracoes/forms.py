@@ -9,20 +9,20 @@ class ConfiguracoesForm(BaseForm):
         fields = "__all__"
 
         help_text = {
-            "instancia": "Insira a instância do serviço",
+            "instancia": "Insira o nome da instância",
             "token": "Insira o token id do serviço",
             "client_token": "Insira o client token do serviço",
         }
 
         labels = {
-            "instancia": "Instância do serviço",
+            "instancia": "Nome da instância",
             "token": "Token Id",
             "client_token": "Client token",
         }
 
-        widget = {
+        widgets = {
             "instancia": forms.TextInput(attrs={"class": "form-control"}),
-            "token": forms.TextInput(attrs={"class": "form-control"}),
-            "client_token": forms.TextInput(attrs={"class": "form-control"}),
+            "token": forms.PasswordInput(render_value=True, attrs={"class": "form-control"}),
+            "client_token": forms.PasswordInput(render_value=True, attrs={"class": "form-control"}),
             "ativo": forms.CheckboxInput(attrs={"class": "form-check-input"}),
         }
