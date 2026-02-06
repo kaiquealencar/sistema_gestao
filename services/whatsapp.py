@@ -4,15 +4,14 @@ from apps.configuracoes.models import ConfiguracoesWhatsapp
 
 def enviar_mensagem_whatsapp(numero_destino, mensagem):    
 
+    dados = buscar_dados_api()    
 
-    zapi_instance_id = os.getenv("ZAPI_INSTANCE_ID")
-    zapi_token = os.getenv("ZAPI_TOKEN")
-    zapi_client_token = os.getenv("ZAPI_CLIENT_TOKEN")
-    zapi_url = f"https://api.z-api.io/instances/{zapi_instance_id}/token/{zapi_token}/send-text"
+    if not dados:
+        return {"status": "erro", "detalhes": "Nenhuma configuração encontrada!"}
 
     headers = {
         "Content-Type": "application/json",
-        "Client-Token": zapi_client_token  
+        "Client-Token": dados["client_token"]  
     }
     payload = {
         "phone": numero_destino,
@@ -20,7 +19,7 @@ def enviar_mensagem_whatsapp(numero_destino, mensagem):
     }
 
     try:
-        response = requests.post(zapi_url, json=payload, headers=headers, timeout=15)
+        response = requests.post(dados["url"], json=payload, headers=headers, timeout=15)
 
         if response.status_code != 200:
             print(f"❌ Erro Z-API ({response.status_code}): {response.text}")
@@ -33,7 +32,14 @@ def enviar_mensagem_whatsapp(numero_destino, mensagem):
         return {"status": "erro", "detalhes": f"RequestException: {str(e)}"}
 
 
-def buscar_dados_api():
+def buscar_dados_api():    
     dados_api = ConfiguracoesWhatsapp.objects.first()
 
-    return {"instance_id": dados_api.token}
+    if not dados_api:
+        return None
+
+    return {
+        "instance_id": dados_api.instancia_id, 
+        "token": dados_api.token, 
+        "client_token": dados_api.client_token,
+        "url": dados_api.url_base}
