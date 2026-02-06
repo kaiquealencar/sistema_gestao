@@ -1,0 +1,28 @@
+from django import forms
+from common.forms import BaseForm
+from .models import ConfiguracoesWhatsapp
+
+
+class ConfiguracoesForm(BaseForm):
+    class Meta:
+        model = ConfiguracoesWhatsapp
+        fields = "__all__"
+
+        help_text = {
+            "instancia": "Insira a instância do serviço",
+            "token": "Insira o token id do serviço",
+            "client_token": "Insira o client token do serviço",
+        }
+
+        labels = {
+            "instancia": "Instância do serviço",
+            "token": "Token Id",
+            "client_token": "Client token",
+        }
+
+        widget = {
+            "instancia": forms.TextInput(attrs={"class": "form-control"}),
+            "token": forms.TextInput(attrs={"class": "form-control"}),
+            "client_token": forms.TextInput(attrs={"class": "form-control"}),
+            "ativo": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        }
