@@ -6,6 +6,7 @@ from apps.configuracoes.models import ConfiguracoesWhatsapp
 def test_criar_config_valido():
     config = ConfiguracoesWhatsapp(
        nome_instancia="58291038475629103847562910384756",
+       instancia_id="829103847562910384756291039966",
        token="842095317659284061374592",
        client_token="8492037561849302756102938475610293",
        url_base="http://localhost:8000/api/v1/"      
