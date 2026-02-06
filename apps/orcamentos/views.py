@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 from weasyprint import HTML
 from django.http import HttpResponse
-from services.whatsapp import enviar_whatsapp_mensagem
+from services.whatsapp import enviar_mensagem_whatsapp
 from services.utils import normalizar_telefone
 
 from .forms import OrcamentoForm, ItemOrcamentoFormSet
@@ -101,37 +101,30 @@ def exportar_orcamento_pdf(request, id):
     return response 
 
 def enviar_orcamento_whatsapp(request, id):
+   
     orcamento = get_object_or_404(Orcamento, id=id)
     
     mensagem =  f"Olá {orcamento.cliente.nome}, aqui está o seu orçamento:\n\n"
 
-
     for item in orcamento.itemorcamento_set.all():
-        mensagem += f"- {item.servico.nome}: R$ {item.preco:.2f}\n"
+        mensagem += f"- {item.servico.nome} - {orcamento.observacoes}: R$ {item.preco:.2f}\n"
     mensagem += f"\nTotal: R$ {orcamento.total:.2f}"
 
+
     try:        
-        enviar_whatsapp_mensagem(normalizar_telefone(orcamento.cliente.telefone), mensagem)
+        response = enviar_mensagem_whatsapp(normalizar_telefone(orcamento.cliente.telefone), mensagem)     
+       
+        if isinstance(response, dict) and response.get("status") == "erro":
+            raise Exception(response.get("detalhes", "Falha ao enviar mensagem"))
 
         if request.headers.get("x-requested-with") == "XMLHttpRequest":
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success'})   
         
         messages.success(request, "Orçamento enviado via WhatsApp!")
         return redirect('orcamentos:orcamento_detail', id=orcamento.id)
     except Exception as e:
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+        
         messages.error(request, f"Erro: {str(e)}")
         return redirect('orcamentos:orcamento_detail', id=orcamento.id)
-
-'''
-    mensagem =  f"Olá {orcamento.cliente.nome}, aqui está o seu orçamento:\n\n"
-
-    for item in orcamento.itemorcamento_set.all():
-        mensagem += f"- {item.servico.nome}: R$ {item.preco:.2f}\n"
-    mensagem += f"\nTotal: R$ {orcamento.total:.2f}"
-    
-    enviar_whatsapp_mensagem(normalizar_telefone(orcamento.cliente.telefone), mensagem)
-    messages.success(request, "Orçamento enviado via WhatsApp com sucesso!")
-    return redirect('orcamentos:orcamento_detail', id=orcamento.id)
-'''

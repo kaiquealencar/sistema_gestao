@@ -1,7 +1,11 @@
+import re
 def normalizar_telefone(numero):
-    numero_telefone = "".join(filter(str.isdigit, numero))
-    numero_telefone = "+55" + numero_telefone if not numero_telefone.startswith("55") else numero_telefone
+    apenas_numeros = re.sub(r'\D', '', str(numero))
+    apenas_numeros = apenas_numeros.lstrip('0')
 
-    return numero_telefone
+    if not apenas_numeros.startswith("55"):
+        apenas_numeros = "55" + apenas_numeros
+
+    return apenas_numeros
 
     

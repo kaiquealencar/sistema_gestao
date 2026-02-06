@@ -1,33 +1,30 @@
 import os
-from twilio.rest import Client
+import requests
 
-def enviar_whatsapp_mensagem(numero_destino, mensagem):
-    account_sid = os.getenv('TWILIO_ACCOUNT_SID')
-    auth_token = os.getenv('TWILIO_AUTH_TOKEN')
-    whatsapp_from = os.getenv("TWILIO_WHATSAPP_NUMBER")
+def enviar_mensagem_whatsapp(numero_destino, mensagem):    
+    zapi_instance_id = os.getenv("ZAPI_INSTANCE_ID")
+    zapi_token = os.getenv("ZAPI_TOKEN")
+    zapi_client_token = os.getenv("ZAPI_CLIENT_TOKEN")
+    zapi_url = f"https://api.z-api.io/instances/{zapi_instance_id}/token/{zapi_token}/send-text"
 
-    client = Client(account_sid, auth_token)
+    headers = {
+        "Content-Type": "application/json",
+        "Client-Token": zapi_client_token  
+    }
+    payload = {
+        "phone": numero_destino,
+        "message": mensagem
+    }
 
-    message = client.messages.create(
-        body=mensagem,
-        from_=whatsapp_from,
-        to= f'whatsapp:{numero_destino}'
-    )
-
-    print(f"--- TENTANDO ENVIAR WHATSAPP ---")
-    print(f"DE: {whatsapp_from}")
-    print(f"PARA: whatsapp:{numero_destino}")
-    
     try:
-        message = client.messages.create(
-            body=mensagem,
-            from_=whatsapp_from,
-            to=f'whatsapp:{numero_destino}'
-        )
-        print(f"SUCESSO NA TWILIO! SID: {message.sid}")
-        return message.sid
-    except Exception as e:
-        print(f"ERRO FATAL NA TWILIO: {e}")
-        raise e # Repassa o erro para a View capturar
+        response = requests.post(zapi_url, json=payload, headers=headers, timeout=15)
 
-    return message.sid
+        if response.status_code != 200:
+            print(f"❌ Erro Z-API ({response.status_code}): {response.text}")
+
+        response.raise_for_status()
+        return response.json()    
+    except requests.exceptions.HTTPError as e:
+        return {"status": "erro", "detalhes": f"HTTPError: {str(e)}"}
+    except requests.exceptions.RequestException as e:
+        return {"status": "erro", "detalhes": f"RequestException: {str(e)}"}
