@@ -2,6 +2,7 @@ import random
 import string
 
 from django.db import models
+from services.utils import gerar_codigo_produto
 
 class Produtos(models.Model):
     nome = models.CharField("Nome do Produto", max_length=300)
@@ -16,7 +17,7 @@ class Produtos(models.Model):
     unidade_medida = models.CharField("Unidade de Medida", max_length=20, default="un")
 
     fornecedor = models.CharField("Fornecedor", max_length=100, blank=True, null=True)
-    imagem = models.ImageField("Imagem do Produto", upload_to="protudos/", blank=True, null=True)
+    imagem = models.ImageField("Imagem do Produto", upload_to="produtos/", blank=True, null=True)
     codigo_barras = models.CharField("Código de Barras", max_length=50, blank=True, null=True)
     ativo = models.BooleanField(default=True)
 
@@ -29,19 +30,10 @@ class Produtos(models.Model):
         ordering = ['nome']
 
     def __str__(self):
-        return f"{self.nome} ({self.cdigo})"
+        return f"{self.nome} ({self.codigo})"
     
     def save(self, *args, **kwargs):
 
         if not self.codigo:
-            iniciais_categoria = ''.join([c[0] for c in (self.categoria or "").split()]).upper()
-            iniciais_nome = ''.join([c[0] for c in self.nome.split()]).upper()
-            codigo = ''.join(random.choices(string.digits, k=3))
-
-            self.codigo = f"{iniciais_categoria}{iniciais_nome}{codigo}"
-
-            while Produtos.objects.filter(codigo=self.codigo).exists():
-                codigo =  ''.join(random.choices(string.digits, k=3))
-                self.sku = f"{iniciais_categoria}-{iniciais_nome}-{codigo}"
-
+            self.codigo = gerar_codigo_produto(Produtos, self.categoria, self.nome)       
         super().save(*args, **kwargs)
