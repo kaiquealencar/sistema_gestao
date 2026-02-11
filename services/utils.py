@@ -16,7 +16,7 @@ def gerar_codigo_produto(model_class, categoria, nome):
 
     iniciais_categoria = extrar_iniciais(categoria)
     iniciais_nome = extrar_iniciais(nome)
-    codigo = ''.join(random.choices(string.digits, k=3))
+    codigo = ''.join(random.choices(string.digits, k=4))
 
     while True:
         novo_codigo = f"{iniciais_categoria}{iniciais_nome}{codigo}"

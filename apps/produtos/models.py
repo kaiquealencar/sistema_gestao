@@ -3,6 +3,7 @@ import string
 
 from django.db import models
 from services.utils import gerar_codigo_produto
+from services.images import salvar_imagem
 
 class Produtos(models.Model):
     nome = models.CharField("Nome do Produto", max_length=300)
@@ -17,7 +18,7 @@ class Produtos(models.Model):
     unidade_medida = models.CharField("Unidade de Medida", max_length=20, default="un")
 
     fornecedor = models.CharField("Fornecedor", max_length=100, blank=True, null=True)
-    imagem = models.ImageField("Imagem do Produto", upload_to="produtos/", blank=True, null=True)
+    imagem = models.ImageField("Imagem do Produto", upload_to="produtos/imagens/", blank=True, null=True)
     codigo_barras = models.CharField("Código de Barras", max_length=50, blank=True, null=True)
     ativo = models.BooleanField(default=True)
 
@@ -33,7 +34,24 @@ class Produtos(models.Model):
         return f"{self.nome} ({self.codigo})"
     
     def save(self, *args, **kwargs):
+        criando = self.pk is None
+        
+        imagem_antiga = None
+        if not criando:
+            imagem_antiga = Produtos.objects.get(pk=self.pk).imagem
+        else:
+            imagem_antiga = None
+        
+        if criando and not self.codigo:
+            self.codigo = gerar_codigo_produto(Produtos, self.categoria, self.nome)      
 
-        if not self.codigo:
-            self.codigo = gerar_codigo_produto(Produtos, self.categoria, self.nome)       
-        super().save(*args, **kwargs)
+        super().save(*args, **kwargs) 
+
+        if self.imagem:
+            salvar_imagem(self.imagem)
+        elif imagem_antiga:
+            self.imagem = imagem_antiga
+            super().save(update_fields=["imagem"])
+
+
+      
