@@ -15,10 +15,15 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">Produtos</a>
-            </li>
+               <a class="nav-link {% if request.resolver_match.url_name == 'produto_list' %}active{% endif %}"
+                    href="{% url 'produtos:produto_list' %}">
+                    Produtos
+                </a>
             <li class="nav-item">
-                <a href="#" class="nav-link">Vendas</a>
+                 <a class="nav-link {% if request.resolver_match.url_name == 'orcamento_list' %}active{% endif %}"
+                    href="{% url 'orcamentos:orcamento_list' %}">
+                    Orçamento
+                </a>
             </li>
         </ul>
 
