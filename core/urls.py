@@ -14,6 +14,7 @@ urlpatterns = [
     path('orcamentos/', include('apps.orcamentos.urls')),
     path('configuracoes-whatsapp/', include('apps.configuracoes.urls')),
     path('produtos/', include('apps.produtos.urls')),
+    path('', include('apps.dashboard.urls')),
 ]
 
 if settings.DEBUG:
