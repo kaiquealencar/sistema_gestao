@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q, CharField, TextField
 from django.http import HttpResponse
 from .forms import ProdutoForm
 from .models import Produtos
 
+@login_required
 def produto_create(request):
     print("FILES >>>", request.FILES)
     form = ProdutoForm(request.POST or None, request.FILES or None)
@@ -22,6 +24,7 @@ def produto_create(request):
 
     return render(request, "produtos/produtos_forms.html", {"form": form})
 
+@login_required
 def produto_edit(request, id):
     produto = get_object_or_404(Produtos, id=id)    
     form = ProdutoForm(request.POST or None, request.FILES or None,  instance=produto)
@@ -41,7 +44,7 @@ def produto_edit(request, id):
     
     return render(request, "produtos/produtos_forms.html", {"form": form, "editando": True, "produto": produto})
     
-
+@login_required
 def produto_list(request):  
     produtos = Produtos.objects.all().order_by("id")
     termo = request.GET.get("search", "").strip()
@@ -57,6 +60,7 @@ def produto_list(request):
 
     return render(request, "produtos/produtos_list.html", {"produtos": produtos, "termo": termo})
 
+@login_required
 def produto_delete(request, id):
     produto = get_object_or_404(Produtos, id=id)
          

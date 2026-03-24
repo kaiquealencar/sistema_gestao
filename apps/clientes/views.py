@@ -1,9 +1,11 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .forms import ClienteForm
 from .models import Cliente
 
+@login_required
 def cliente_create(request):
     form = ClienteForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
@@ -17,6 +19,7 @@ def cliente_create(request):
 
     return render(request, 'clientes/cliente_form.html', {'form': form})
 
+@login_required
 def cliente_edit(request, cliente_id):    
     cliente = get_object_or_404(Cliente, id=cliente_id)
     form = ClienteForm(request.POST or None, instance=cliente)  
@@ -28,6 +31,7 @@ def cliente_edit(request, cliente_id):
     
     return render(request, 'clientes/cliente_form.html', {'form': form, 'cliente': cliente, "editando": True})
     
+@login_required
 def cliente_delete(request, cliente_id):
     cliente = get_object_or_404(Cliente, id=cliente_id)
 
@@ -37,6 +41,7 @@ def cliente_delete(request, cliente_id):
         
     return redirect('clientes:cliente_list')
 
+@login_required
 def cliente_list(request):
     clientes = Cliente.objects.all()
     return render(request, 'clientes/clientes_list.html', {'clientes': clientes})

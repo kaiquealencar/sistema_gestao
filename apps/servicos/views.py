@@ -1,12 +1,14 @@
 from email.mime import message
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 from .forms import ServicoForm
 from .models import Servico
 
 
+@login_required
 def servico_create(request):
     form = ServicoForm(request.POST or None)
     
@@ -22,10 +24,12 @@ def servico_create(request):
 
     return render(request, 'servicos/servico_form.html', {'form': form})
 
+@login_required
 def servico_list(request):
     servicos = Servico.objects.all()
     return render(request, 'servicos/servico_list.html', {'servicos': servicos})
 
+@login_required
 def servico_edit(request, servico_id):
     servico = get_object_or_404(Servico, id=servico_id)
     form = ServicoForm(request.POST or None, instance=servico)
@@ -38,6 +42,7 @@ def servico_edit(request, servico_id):
 
     return render(request, 'servicos/servico_form.html', {"form": form, "servico": servico, "editando": True})
 
+@login_required
 def servico_delete(request, servico_id):
     servico = get_object_or_404(Servico, id=servico_id)
     if request.method == "POST":

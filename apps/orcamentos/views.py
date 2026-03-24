@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from weasyprint import HTML
 from django.http import HttpResponse
 from services.whatsapp import enviar_mensagem_whatsapp
@@ -11,6 +12,7 @@ from .forms import OrcamentoForm, ItemOrcamentoFormSet
 from .models import Orcamento
 
 
+@login_required
 def orcamento_list(request):
     status = request.GET.get('status')
     queryset = Orcamento.objects.all().order_by('-data_criacao')
@@ -22,7 +24,7 @@ def orcamento_list(request):
         'orcamentos': queryset
     })
 
-
+@login_required
 def orcamento_create(request):
     if request.method == 'POST':
         form = OrcamentoForm(request.POST)
@@ -45,7 +47,7 @@ def orcamento_create(request):
         'formset': formset
     })
 
-
+@login_required
 def orcamento_edit(request, id):
     orcamento = get_object_or_404(Orcamento, id=id)
 
@@ -68,7 +70,7 @@ def orcamento_edit(request, id):
         'editando': True
     })
 
-
+@login_required
 def orcamento_delete(request, id):
     orcamento = get_object_or_404(Orcamento, id=id)
 
@@ -81,14 +83,14 @@ def orcamento_delete(request, id):
         'orcamento': orcamento
     })
 
-
+@login_required
 def orcamento_detail(request, id):
     orcamento = get_object_or_404(Orcamento, id=id)
     return render(request, 'orcamentos/orcamento_detail.html', {
         'orcamento': orcamento
     })
 
-
+@login_required
 def exportar_orcamento_pdf(request, id):
     orcamento = get_object_or_404(Orcamento, id=id)
     html_string = render_to_string('orcamentos/orcamento_pdf.html', {'orcamento': orcamento})
@@ -100,6 +102,7 @@ def exportar_orcamento_pdf(request, id):
     #response['Content-Disposition'] = f'attachment; filename="orcamento_{orcamento.id}.pdf"'
     return response 
 
+@login_required
 def enviar_orcamento_whatsapp(request, id):
    
     orcamento = get_object_or_404(Orcamento, id=id)
